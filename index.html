@@ -15,10 +15,6 @@
 </head>
 
 <body>
- <!-- <button data-place="texas">Texas</button>
-  <button data-place="california">California</button>
-  <button data-place="florida">Florida</button>-->
-  
 
 <div class="container">
     <h1>Add a Place</h1>    
@@ -59,99 +55,81 @@ function renderButtons() {
         $("#place-view").append(a);
     }
 }
-    // This function handles events where one button is clicked
-    $("#add-place").on("click", function(event) {
-        // event.preventDefault() prevents the form from trying to submit itself.
-        // We're using a form so that the user can hit enter instead of clicking the button if they want
-        event.preventDefault();
-
-        // This line will grab the text from the input box
-        var placeinput = $("#place-input").val().trim();
-        console.log(placeinput);
-        // The place from the textbox is then added to our array
-        placelist.push(placeinput);
-        console.log("***",placelist);
-        $("#place-input").val('');
-        
-        
-        // calling renderButtons which handles the processing of our place array
-        renderButtons();
-      });
-
-      // Calling the renderButtons function at least once to display the initial list of places
-      renderButtons();
-
-
-    $("button").on("click", function() {
-    //$(".place").on("click", function() {
+// This function handles events where one button is clicked
+$("#add-place").on("click", function(event) {
     
-    //    event.preventDefault();
+    event.preventDefault();
 
-    console.log("i am clicked");
-      var place = $(this).attr("data-place");
-      console.log("place",place);
-      var queryURL = "https://api.giphy.com/v1/gifs/search?q=" +
-      place + "&api_key=5Ownu6DNoZmdOrf1eHw6MlHaGwa3AdEZ&limit=10";
-      console.log("place!!!!!!!!!!!!!!!!!!1",queryURL);
-      $.ajax({
-        url: queryURL,
-        method: "GET"
-      }).then(function(response) {
-        
-        
-        console.log(response);
+    // This line will grab the text from the input box
+    var placeinput = $("#place-input").val().trim();
+    
+    // The place from the textbox is then added to our array
+    placelist.push(placeinput);
+    
+    $("#place-input").val('');    
+    
+    // calling renderButtons which handles the processing of our place array
+    renderButtons();
+    });
 
-        
-        var results = response.data;
-        
+// Calling the renderButtons function at least once to display the initial list of places
+renderButtons();
 
-        for (var i = 0; i < results.length; i++) {
 
-        
-        var placeDiv = $("<div>");
-        
-        var p = $("<p>");
-        
-        p.text('Rating: ' + results[i].rating);
-        
-        console.log(p);
-        
-        var placeImage = $("<img>");
-        
-        placeImage.attr('src', results[i].images.fixed_height_still.url);
-        placeImage.attr('class', "gif");
-        placeImage.attr('data-state', "still");
-        placeImage.attr('data-still', results[i].images.fixed_height_still.url);
-        placeImage.attr('data-animate', results[i].images.fixed_height.url);
-        
-        console.log(placeImage);
+$("button").on("click", function() {
        
-        placeDiv.append(p);
-        placeDiv.append(placeImage);
-        
-            
-        
-        $("#gifs-appear-here").prepend(placeDiv);
-        
-        }
-        $(".gif").on("click", function() {
-            
+    //    event.preventDefault();
+    
+var place = $(this).attr("data-place");      
+var queryURL = "https://api.giphy.com/v1/gifs/search?q=" +
+      place + "&api_key=5Ownu6DNoZmdOrf1eHw6MlHaGwa3AdEZ&limit=10";
       
-      var state = $(this).attr("data-state");
-      
-      console.log("hello :",state);
-      if (state === "still") {
-        $(this).attr("src", $(this).attr("data-animate"));
-        $(this).attr("data-state", "animate");
-      } else {
-        $(this).attr("src", $(this).attr("data-still"));
-        $(this).attr("data-state", "still");
-      }
-    });
+$.ajax({
+    url: queryURL,
+    method: "GET"
+}).then(function(response) {
+        
+var results = response.data;
 
-      }); 
-    });
-  </script>
+for (var i = 0; i < results.length; i++) {
+
+    var placeDiv = $("<div>");
+
+    var p = $("<p>");
+
+    p.text('Rating: ' + results[i].rating);
+
+    var placeImage = $("<img>");
+
+    placeImage.attr('src', results[i].images.fixed_height_still.url);
+    placeImage.attr('class', "gif");
+    placeImage.attr('data-state', "still");
+    placeImage.attr('data-still', results[i].images.fixed_height_still.url);
+    placeImage.attr('data-animate', results[i].images.fixed_height.url);
+
+    placeDiv.append(p);
+    placeDiv.append(placeImage);
+
+    $("#gifs-appear-here").prepend(placeDiv);
+
+}
+$(".gif").on("click", function() {    
+
+var state = $(this).attr("data-state");
+
+    if (state === "still") {
+    $(this).attr("src", $(this).attr("data-animate"));
+    $(this).attr("data-state", "animate");
+    } else {
+    $(this).attr("src", $(this).attr("data-still"));
+    $(this).attr("data-state", "still");
+    }
+});
+
+}); 
+});
+
+</script>
 </body>
 
 </html>
